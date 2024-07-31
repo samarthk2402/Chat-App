@@ -59,7 +59,37 @@ const CredentialsForm = ({ root, method }) => {
     }
   };
 
-  const handleLogin = async (e) => {};
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    };
+
+    try {
+      const res = await fetch(apiUrl + "/token/", options);
+      if (res.ok) {
+        const token = await res.json();
+        localStorage.setItem("ACCESS_TOKEN", token.access);
+        localStorage.setItem("REFRESH_TOKEN", token.refresh);
+        navigate("/");
+      } else if (res.status === 401) {
+        window.alert("Invalid login credentials!");
+      } else {
+        const error = await res.json();
+        console.log(error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container style={{ maxWidth: "300px" }}>
@@ -72,14 +102,17 @@ const CredentialsForm = ({ root, method }) => {
           <h3 style={{ marginBottom: "20px", textAlign: "center" }}>
             {method === "login" ? "Log In" : "Create an account"}
           </h3>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
+
+          {method === "signup" && (
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
+          )}
 
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Username</Form.Label>

@@ -1,0 +1,28 @@
+.vertical-nav {
+  width: 250px;
+  height: 100vh;
+  position: absolute; /* Change to absolute */
+  top: 0;
+  left: 0;
+  background-color: #343a40;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.vertical-nav .nav-link {
+  color: #fff;
+}
+
+.logout-link {
+  margin-top: auto;
+  color: #fff;
+}
+
+.vertical-nav .logout-link:hover {
+  background-color: rgba(255, 0, 0, 0.409) !important;
+}
+
+.vertical-nav .nav-link:hover {
+  background-color: #495057;
+}

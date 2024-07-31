@@ -2,7 +2,7 @@ import React from "react";
 import CredentialsForm from "../components/CredentialsForm";
 
 const Signup = () => {
-  return <CredentialsForm />;
+  return <CredentialsForm method={"signup"} />;
 };
 
 export default Signup;

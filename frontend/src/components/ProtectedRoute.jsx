@@ -9,7 +9,7 @@ const ProtectedRoute = ({ children }) => {
 
   const navigate = useNavigate();
 
-  const refreshToken = () => {
+  const refreshToken = async () => {
     const options = {
       method: "POST",
       headers: {
@@ -20,21 +20,25 @@ const ProtectedRoute = ({ children }) => {
       }),
     };
 
-    fetch(apiUrl + "/token/refresh", options)
-      .then((res) => {
-        if (res.ok) {
-          setAuthenticated(true);
-        } else {
-          window.alert("Error refreshing access token...");
-        }
-      })
-      .catch((err) => console.log(err));
+    try {
+      const res = await fetch(apiUrl + "/token/refresh/", options);
+      const data = await res.json();
+      localStorage.setItem("ACCESS_TOKEN", data.access);
+      const decoded = jwtDecode(data.access);
+      setAuthenticated(true);
+      console.log(
+        "Access token successfully refreshed and will expire at " +
+          new Date(decoded.exp * 1000)
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const authenticate = () => {
     const access = localStorage.getItem("ACCESS_TOKEN");
 
-    if (access != null) {
+    try {
       const decoded = jwtDecode(access);
       if (Date.now() >= decoded.exp * 1000) {
         console.log("token expired! refreshing token...");
@@ -42,7 +46,8 @@ const ProtectedRoute = ({ children }) => {
       } else {
         setAuthenticated(true);
       }
-    } else {
+    } catch {
+      console.log("no access token");
       setAuthenticated(false);
       navigate("/signup");
     }

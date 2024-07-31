@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { Container } from "react-bootstrap";
-import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
+import { Routes, Route, useNavigate, BrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";

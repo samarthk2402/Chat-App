@@ -1,7 +1,8 @@
 import React from "react";
+import CredentialsForm from "../components/CredentialsForm";
 
 const Login = () => {
-  return <div>Login</div>;
+  return <CredentialsForm method={"login"} />;
 };
 
 export default Login;
