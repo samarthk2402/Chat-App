@@ -53,6 +53,8 @@ const CredentialsForm = ({ root, method }) => {
 
       localStorage.setItem("ACCESS_TOKEN", data.access);
       localStorage.setItem("REFRESH_TOKEN", data.refresh);
+      localStorage.setItem("USERNAME", username);
+      localStorage.setItem("EMAIL", email);
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -79,6 +81,8 @@ const CredentialsForm = ({ root, method }) => {
         const token = await res.json();
         localStorage.setItem("ACCESS_TOKEN", token.access);
         localStorage.setItem("REFRESH_TOKEN", token.refresh);
+        localStorage.setItem("USERNAME", username);
+        localStorage.setItem("EMAIL", email);
         navigate("/");
       } else if (res.status === 401) {
         window.alert("Invalid login credentials!");

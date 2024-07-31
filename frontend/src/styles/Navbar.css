@@ -1,5 +1,5 @@
 .vertical-nav {
-  width: 250px;
+  width: 150px;
   height: 100vh;
   position: absolute; /* Change to absolute */
   top: 0;
@@ -12,6 +12,8 @@
 
 .vertical-nav .nav-link {
   color: #fff;
+  display: flex;
+  align-items: center; /* Align items vertically in the center */
 }
 
 .logout-link {
