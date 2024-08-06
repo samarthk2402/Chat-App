@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { PeopleFill } from "react-bootstrap-icons";
 
 const CreateRoom = () => {
-  const [room, setRoom] = useState({});
+  const [room, setRoom] = useState({ all_admin: false });
 
   const updateRoom = (field, val) => {
     let updatedRoom = JSON.parse(JSON.stringify(room));
@@ -25,26 +25,33 @@ const CreateRoom = () => {
       </h3>
 
       <PeopleFill size={64} style={{ margin: "auto" }} />
-      <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label>Room Picture</Form.Label>
-        <Form.Control type="file" />
-      </Form.Group>
 
       <Form onSubmit={(e) => handleSubmit(e)}>
         <Form.Group className="mb-3" controlId="username">
           <Form.Label>Room Name</Form.Label>
           <Form.Control
             type="text"
+            required
             onChange={(e) => updateRoom("name", e.target.value)}
           />
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group style={{ marginBottom: "10px" }}>
           <Form.Label>Room Description</Form.Label>
-          <Form.Control as="textarea" />
+          <Form.Control
+            as="textarea"
+            required
+            onChange={(e) => updateRoom("description", e.target.value)}
+          />
         </Form.Group>
 
-        <Form.Check type="switch" id="custom-switch" label="Everyone admin" />
+        <Form.Check
+          style={{ marginBottom: "10px" }}
+          type="switch"
+          id="custom-switch"
+          label="Everyone admin"
+          onChange={(e) => updateRoom("all_admin", e.target.checked)}
+        />
 
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Button variant="primary" type="submit">
