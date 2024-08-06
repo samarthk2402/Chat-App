@@ -1,14 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Nav, Container, Navbar } from "react-bootstrap";
 import "../styles/Navbar.css";
 import { BoxArrowLeft, PlusLg, Search } from "react-bootstrap-icons";
+import CreateRoom from "../components/CreateRoom";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [page, setPage] = useState("none");
 
   const username = localStorage.getItem("USERNAME");
-  const email = localStorage.getItem("EMAIL");
+  //const email = localStorage.getItem("EMAIL");
 
   const logout = () => {
     localStorage.setItem("ACCESS_TOKEN", null);
@@ -22,7 +24,11 @@ const Home = () => {
         <Navbar.Brand style={{ marginLeft: "auto", marginRight: "auto" }}>
           <h5>{username}</h5>
         </Navbar.Brand>
-        <Nav.Link href="#" className="text-white">
+        <Nav.Link
+          href="#"
+          className="text-white"
+          onClick={() => setPage("newroom")}
+        >
           <PlusLg style={{ marginRight: "10px" }} />
           New room
         </Nav.Link>
@@ -39,9 +45,13 @@ const Home = () => {
         </Nav.Link>
       </Nav>
       <Container>
-        <h3 style={{ textAlign: "center" }}>
-          Join a Chat Room to get started!
-        </h3>
+        {page === "none" ? (
+          <h3 style={{ textAlign: "center" }}>
+            Join a Chat Room to get started!
+          </h3>
+        ) : page === "newroom" ? (
+          <CreateRoom />
+        ) : null}
       </Container>
     </>
   );
