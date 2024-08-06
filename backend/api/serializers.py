@@ -1,7 +1,13 @@
 
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from rest_framework_simplejwt.tokens import RefreshToken
+from .models import *
+
+
+class RoomSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Room
+        fields = ["name", "description", "all_admin"]
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
