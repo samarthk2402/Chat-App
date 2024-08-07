@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import { PeopleFill } from "react-bootstrap-icons";
 
-const CreateRoom = () => {
+const CreateRoom = ({ callback }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [room, setRoom] = useState({ all_admin: false });
 
   const updateRoom = (field, val) => {
@@ -13,9 +14,32 @@ const CreateRoom = () => {
     setRoom(updatedRoom);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(room);
+    const token = localStorage.getItem("ACCESS_TOKEN");
+
+    const options = {
+      method: "POST",
+      headers: {
+        // prettier-ignore
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(room),
+    };
+
+    console.log(options);
+
+    const res = await fetch(apiUrl + "/room/create", options);
+
+    try {
+      const data = await res.json();
+      console.log(data);
+      callback();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

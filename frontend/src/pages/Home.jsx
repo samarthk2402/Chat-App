@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Nav, Container, Navbar } from "react-bootstrap";
 import "../styles/Navbar.css";
-import { BoxArrowLeft, PlusLg, Search } from "react-bootstrap-icons";
+import {
+  BoxArrowLeft,
+  PlusLg,
+  Search,
+  PeopleFill,
+} from "react-bootstrap-icons";
 import CreateRoom from "../components/CreateRoom";
 
 const Home = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const [page, setPage] = useState("none");
+  const [rooms, setRooms] = useState([{ name: "Loading..." }]);
 
   const username = localStorage.getItem("USERNAME");
   //const email = localStorage.getItem("EMAIL");
@@ -17,6 +24,31 @@ const Home = () => {
     localStorage.setItem("REFRESH_TOKEN", null);
     navigate("/login");
   };
+
+  const getRooms = async () => {
+    const token = localStorage.getItem("ACCESS_TOKEN");
+    const options = {
+      method: "GET",
+      headers: {
+        // prettier-ignore
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
+
+    const res = await fetch(apiUrl + "/rooms", options);
+    try {
+      const data = await res.json();
+      setRooms(data);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getRooms();
+  }, []);
 
   return (
     <>
@@ -36,6 +68,19 @@ const Home = () => {
           <Search style={{ marginRight: "10px" }} />
           Join Room
         </Nav.Link>
+
+        {rooms.map((room) => (
+          <Nav.Link
+            key={room.id}
+            href="#"
+            className="text-white"
+            onClick={() => setPage(room)}
+          >
+            <PeopleFill style={{ marginRight: "10px" }} />
+            {room.name}
+          </Nav.Link>
+        ))}
+
         <Nav.Link
           href="#"
           className="text-white mt-auto logout-link"
@@ -50,7 +95,9 @@ const Home = () => {
             Join a Chat Room to get started!
           </h3>
         ) : page === "newroom" ? (
-          <CreateRoom />
+          <CreateRoom callback={getRooms} />
+        ) : rooms.includes(page) ? (
+          <h3 style={{ textAlign: "center" }}>{page.name}</h3>
         ) : null}
       </Container>
     </>

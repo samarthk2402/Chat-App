@@ -2,18 +2,33 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from .models import *
 from .serializers import *
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from rest_framework import status
 
 
-class CreateRoom(CreateAPIView):
+class ListRooms(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = RoomSerializer
+    
+    def get_queryset(self):
+        user = self.request.user
+        return user.rooms
+
+
+class CreateRoom(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = CreateRoomSerializer
     queryset = Room.objects.all()
+
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(creator = self.request.user, admins = [self.request.user], members = [self.request.user])
+        else:
+            print(serializer.errors)
 
 
 

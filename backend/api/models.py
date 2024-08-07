@@ -20,5 +20,6 @@ class Room(models.Model):
     description = models.TextField()
     all_admin = models.BooleanField()
     admins = models.ManyToManyField(User, related_name='admin_rooms')  # ManyToManyField to User
+    members = models.ManyToManyField(User, related_name='rooms')
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
