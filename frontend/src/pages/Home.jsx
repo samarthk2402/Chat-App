@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap-icons";
 import CreateRoom from "../components/CreateRoom";
 import ChatRoom from "../components/ChatRoom";
+import JoinRoom from "../components/JoinRoom";
 
 const Home = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -57,15 +58,11 @@ const Home = () => {
         <Navbar.Brand style={{ marginLeft: "auto", marginRight: "auto" }}>
           <h5>{username}</h5>
         </Navbar.Brand>
-        <Nav.Link
-          href="#"
-          className="text-white"
-          onClick={() => setPage("newroom")}
-        >
+        <Nav.Link className="text-white" onClick={() => setPage("newroom")}>
           <PlusLg style={{ marginRight: "10px" }} />
           New room
         </Nav.Link>
-        <Nav.Link href="#" className="text-white">
+        <Nav.Link className="text-white" onClick={() => setPage("joinroom")}>
           <Search style={{ marginRight: "10px" }} />
           Join Room
         </Nav.Link>
@@ -93,10 +90,12 @@ const Home = () => {
       <Container>
         {page === "none" ? (
           <h3 style={{ textAlign: "center" }}>
-            Join a Chat Room to get started!
+            Join or create a Chat Room to get started!
           </h3>
         ) : page === "newroom" ? (
           <CreateRoom callback={getRooms} />
+        ) : page === "joinroom" ? (
+          <JoinRoom />
         ) : rooms.includes(page) ? (
           <ChatRoom room={page} />
         ) : null}

@@ -32,6 +32,7 @@ const ProtectedRoute = ({ children }) => {
       );
     } catch (error) {
       console.log(error);
+      setAuthenticated(false);
     }
   };
 
