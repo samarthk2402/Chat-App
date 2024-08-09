@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from .models import *
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
@@ -30,7 +30,23 @@ class CreateRoom(CreateAPIView):
         else:
             print(serializer.errors)
 
+class JoinRoom(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request, format=None):
+        user = self.request.user
+        room_code = request.data.get("code")
+        if room_code != None:
+            rooms = Room.objects.filter(code=room_code)
+            if len(rooms) > 0:
+                room = rooms[0]
+                room.members.add(user)
+                room.save()
+                return Response({"msg": "User added to room successfully!"}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"Bad Request": "No rooms found with given room code..."}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"Bad Request": "Room code not given..."}, status=status.HTTP_400_BAD_REQUEST)
 
     
 class SignUp(APIView):
