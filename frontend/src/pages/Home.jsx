@@ -9,6 +9,7 @@ import {
   PeopleFill,
 } from "react-bootstrap-icons";
 import CreateRoom from "../components/CreateRoom";
+import ChatRoom from "../components/ChatRoom";
 
 const Home = () => {
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -97,7 +98,7 @@ const Home = () => {
         ) : page === "newroom" ? (
           <CreateRoom callback={getRooms} />
         ) : rooms.includes(page) ? (
-          <h3 style={{ textAlign: "center" }}>{page.name}</h3>
+          <ChatRoom room={page} />
         ) : null}
       </Container>
     </>
