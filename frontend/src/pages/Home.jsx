@@ -55,14 +55,25 @@ const Home = () => {
   return (
     <>
       <Nav className="flex-column vertical-nav">
-        <Navbar.Brand style={{ marginLeft: "auto", marginRight: "auto" }}>
+        <Navbar.Brand
+          key="username"
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+        >
           <h5>{username}</h5>
         </Navbar.Brand>
-        <Nav.Link className="text-white" onClick={() => setPage("newroom")}>
+        <Nav.Link
+          key="newroom"
+          className="text-white"
+          onClick={() => setPage("newroom")}
+        >
           <PlusLg style={{ marginRight: "10px" }} />
           New room
         </Nav.Link>
-        <Nav.Link className="text-white" onClick={() => setPage("joinroom")}>
+        <Nav.Link
+          key="joinroom"
+          className="text-white"
+          onClick={() => setPage("joinroom")}
+        >
           <Search style={{ marginRight: "10px" }} />
           Join Room
         </Nav.Link>
@@ -80,6 +91,7 @@ const Home = () => {
         ))}
 
         <Nav.Link
+          key="logout"
           href="#"
           className="text-white mt-auto logout-link"
           onClick={logout}
