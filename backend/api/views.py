@@ -40,13 +40,16 @@ class JoinRoom(APIView):
             rooms = Room.objects.filter(code=room_code)
             if len(rooms) > 0:
                 room = rooms[0]
-                room.members.add(user)
-                room.save()
-                return Response({"msg": "User added to room successfully!"}, status=status.HTTP_201_CREATED)
+                if not room.members.filter(id=user.id).exists():
+                    room.members.add(user)
+                    room.save()
+                    room_serializer = RoomSerializer(room)
+                    return Response({"room": room_serializer.data}, status=status.HTTP_201_CREATED)
+                return Response({"message": "You are already in this room..."}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                return Response({"Bad Request": "No rooms found with given room code..."}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"message": "No rooms found with that room code..."}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({"Bad Request": "Room code not given..."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Room code not given..."}, status=status.HTTP_400_BAD_REQUEST)
 
     
 class SignUp(APIView):

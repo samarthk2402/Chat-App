@@ -95,7 +95,7 @@ const Home = () => {
         ) : page === "newroom" ? (
           <CreateRoom callback={getRooms} />
         ) : page === "joinroom" ? (
-          <JoinRoom />
+          <JoinRoom getRooms={getRooms} openRoom={setPage} />
         ) : rooms.includes(page) ? (
           <ChatRoom room={page} />
         ) : null}

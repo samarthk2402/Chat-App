@@ -1,12 +1,34 @@
 import React, { useState } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 
-const JoinRoom = () => {
+const JoinRoom = ({ getRooms, openRoom }) => {
+  const apiUrl = import.meta.env.VITE_API_URL;
   const [code, setCode] = useState(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(code);
+    const token = localStorage.getItem("ACCESS_TOKEN");
+    const options = {
+      method: "POST",
+      headers: {
+        // prettier-ignore
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ code: code }),
+    };
+
+    try {
+      const res = await fetch(apiUrl + "/room/join", options);
+      const data = await res.json();
+      if (!res.ok) {
+        window.alert(data.message);
+      } else {
+        getRooms();
+      }
+    } catch (err) {
+      window.alert(err);
+    }
   };
 
   return (

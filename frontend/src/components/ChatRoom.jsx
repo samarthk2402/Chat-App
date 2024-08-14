@@ -13,7 +13,10 @@ const ChatRoom = ({ room }) => {
         margin: "auto",
       }}
     >
-      <Card.Header as="h5">{room.name}</Card.Header>
+      <Card.Header>
+        <h5>{room.name}</h5>
+        <h6>Code: {room.code}</h6>
+      </Card.Header>
       <Card.Body style={{ flex: "1 0 auto" }}>
         {" "}
         {/* Takes up remaining space */}
