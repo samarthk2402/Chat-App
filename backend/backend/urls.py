@@ -28,5 +28,6 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path("accounts/", include("django.contrib.auth.urls")),
     path("api/signup", SignUp().as_view()),
-    path("api/", include("api.urls"))
+    path("api/", include("api.urls")),
+    path("chat/", include("chat.urls"))
 ]

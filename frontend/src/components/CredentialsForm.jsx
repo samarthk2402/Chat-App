@@ -28,7 +28,7 @@ const CredentialsForm = ({ root, method }) => {
     };
 
     try {
-      const res = await fetch(apiUrl + "/signup", options);
+      const res = await fetch(apiUrl + "api/signup", options);
       if (!res.ok) {
         // Handle HTTP errors
         const errorData = await res.json();
@@ -76,7 +76,7 @@ const CredentialsForm = ({ root, method }) => {
     };
 
     try {
-      const res = await fetch(apiUrl + "/token/", options);
+      const res = await fetch(apiUrl + "api/token/", options);
       if (res.ok) {
         const token = await res.json();
         localStorage.setItem("ACCESS_TOKEN", token.access);

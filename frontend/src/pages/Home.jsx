@@ -38,7 +38,7 @@ const Home = () => {
       },
     };
 
-    const res = await fetch(apiUrl + "/rooms", options);
+    const res = await fetch(apiUrl + "api/rooms", options);
     try {
       const data = await res.json();
       setRooms(data);

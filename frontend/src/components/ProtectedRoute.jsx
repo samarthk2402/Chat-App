@@ -21,7 +21,7 @@ const ProtectedRoute = ({ children }) => {
     };
 
     try {
-      const res = await fetch(apiUrl + "/token/refresh/", options);
+      const res = await fetch(apiUrl + "api/token/refresh/", options);
       const data = await res.json();
       localStorage.setItem("ACCESS_TOKEN", data.access);
       const decoded = jwtDecode(data.access);

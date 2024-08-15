@@ -31,7 +31,7 @@ const CreateRoom = ({ callback }) => {
 
     console.log(options);
 
-    const res = await fetch(apiUrl + "/room/create", options);
+    const res = await fetch(apiUrl + "api/room/create", options);
 
     try {
       const data = await res.json();

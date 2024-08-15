@@ -19,7 +19,7 @@ const JoinRoom = ({ getRooms, openRoom }) => {
     };
 
     try {
-      const res = await fetch(apiUrl + "/room/join", options);
+      const res = await fetch(apiUrl + "api/room/join", options);
       const data = await res.json();
       if (!res.ok) {
         window.alert(data.message);
