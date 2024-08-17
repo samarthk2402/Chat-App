@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Nav, Container, Navbar } from "react-bootstrap";
+import { Nav, Container, Navbar, Collapse, Card } from "react-bootstrap";
 import "../styles/Navbar.css";
 import {
   BoxArrowLeft,
   PlusLg,
   Search,
   PeopleFill,
+  ChevronLeft,
+  ChevronRight,
 } from "react-bootstrap-icons";
 import CreateRoom from "../components/CreateRoom";
 import ChatRoom from "../components/ChatRoom";
@@ -17,9 +19,9 @@ const Home = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState("none");
   const [rooms, setRooms] = useState([{ name: "Loading..." }]);
+  const [navActive, setNavActive] = useState(true);
 
   const username = localStorage.getItem("USERNAME");
-  //const email = localStorage.getItem("EMAIL");
 
   const logout = () => {
     localStorage.setItem("ACCESS_TOKEN", null);
@@ -32,8 +34,7 @@ const Home = () => {
     const options = {
       method: "GET",
       headers: {
-        // prettier-ignore
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
     };
@@ -42,7 +43,6 @@ const Home = () => {
     try {
       const data = await res.json();
       setRooms(data);
-      console.log(data);
     } catch (err) {
       console.log(err);
     }
@@ -52,67 +52,183 @@ const Home = () => {
     getRooms();
   }, []);
 
+  useEffect(() => console.log(navActive), [navActive]);
+
   return (
-    <>
-      <Nav className="flex-column vertical-nav">
-        <Navbar.Brand
-          key="username"
-          style={{ marginLeft: "auto", marginRight: "auto" }}
-        >
-          <h5>{username}</h5>
-        </Navbar.Brand>
-        <Nav.Link
-          key="newroom"
-          className="text-white"
-          onClick={() => setPage("newroom")}
-        >
-          <PlusLg style={{ marginRight: "10px" }} />
-          New room
-        </Nav.Link>
-        <Nav.Link
-          key="joinroom"
-          className="text-white"
-          onClick={() => setPage("joinroom")}
-        >
-          <Search style={{ marginRight: "10px" }} />
-          Join Room
-        </Nav.Link>
-
-        {rooms.map((room) => (
-          <Nav.Link
-            key={room.id}
-            href="#"
-            className="text-white"
-            onClick={() => setPage(room)}
+    <div
+      style={{
+        display: "flex",
+        height: "100vh",
+      }}
+    >
+      <Collapse in={navActive} dimension="width">
+        <div id="example-collapse-text" style={{ width: "200px" }}>
+          <Nav
+            className="flex-column vertical-nav"
+            style={{ width: "100%", position: "static" }}
           >
-            <PeopleFill style={{ marginRight: "10px" }} />
-            {room.name}
-          </Nav.Link>
-        ))}
+            <Navbar.Brand
+              key="username"
+              style={{
+                marginLeft: "auto",
+                marginRight: "auto",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <h5>{username}</h5>
+            </Navbar.Brand>
 
-        <Nav.Link
-          key="logout"
-          href="#"
-          className="text-white mt-auto logout-link"
-          onClick={logout}
+            <Nav.Link
+              key="newroom"
+              className="text-white"
+              onClick={() => setPage("newroom")}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  minWidth: "150px",
+                }}
+              >
+                <PlusLg
+                  style={{
+                    marginRight: "10px",
+                    fontSize: "24px",
+                    flexShrink: 0,
+                  }}
+                />
+                <span style={{ whiteSpace: "nowrap", flexShrink: 0 }}>
+                  New room
+                </span>
+              </div>
+            </Nav.Link>
+
+            <Nav.Link
+              key="joinroom"
+              className="text-white"
+              onClick={() => setPage("joinroom")}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  minWidth: "150px",
+                }}
+              >
+                <Search
+                  style={{
+                    marginRight: "10px",
+                    fontSize: "24px",
+                    flexShrink: 0,
+                  }}
+                />
+                <span style={{ whiteSpace: "nowrap", flexShrink: 0 }}>
+                  Join Room
+                </span>
+              </div>
+            </Nav.Link>
+
+            {rooms.map((room) => (
+              <Nav.Link
+                key={room.id}
+                href="#"
+                className="text-white"
+                onClick={() => setPage(room)}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    minWidth: "150px",
+                  }}
+                >
+                  <PeopleFill
+                    style={{
+                      marginRight: "10px",
+                      fontSize: "24px",
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span style={{ whiteSpace: "nowrap", flexShrink: 0 }}>
+                    {room.name}
+                  </span>
+                </div>
+              </Nav.Link>
+            ))}
+
+            <Nav.Link
+              key="logout"
+              href="#"
+              className="text-white mt-auto logout-link"
+              onClick={logout}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  minWidth: "150px",
+                }}
+              >
+                <BoxArrowLeft
+                  style={{
+                    marginRight: "10px",
+                    fontSize: "24px",
+                    flexShrink: 0,
+                  }}
+                />
+                <span style={{ whiteSpace: "nowrap", flexShrink: 0 }}>
+                  Log out
+                </span>
+              </div>
+            </Nav.Link>
+          </Nav>
+        </div>
+      </Collapse>
+      <div style={{ display: "flex", flexDirection: "row", flex: 1 }}>
+        {navActive ? (
+          <ChevronLeft
+            style={{
+              fontSize: "40px",
+              cursor: "pointer",
+              position: "relative",
+              top: "50%",
+            }}
+            onClick={() => setNavActive(false)}
+          />
+        ) : (
+          <ChevronRight
+            style={{
+              fontSize: "40px",
+              cursor: "pointer",
+              position: "relative",
+              top: "50%",
+            }}
+            onClick={() => setNavActive(true)}
+          />
+        )}
+        <Container
+          style={{
+            flex: 1,
+            height: "100%",
+            paddingTop: "50px",
+            paddingBottom: "50px",
+            paddingLeft: "0px",
+          }}
         >
-          <BoxArrowLeft style={{ marginRight: "10px" }} /> Log out
-        </Nav.Link>
-      </Nav>
-      <Container>
-        {page === "none" ? (
-          <h3 style={{ textAlign: "center" }}>
-            Join or create a Chat Room to get started!
-          </h3>
-        ) : page === "newroom" ? (
-          <CreateRoom callback={getRooms} />
-        ) : page === "joinroom" ? (
-          <JoinRoom getRooms={getRooms} openRoom={setPage} />
-        ) : rooms.includes(page) ? (
-          <ChatRoom room={page} />
-        ) : null}
-      </Container>
-    </>
+          {page === "none" ? (
+            <h3 style={{ textAlign: "center" }}>
+              Join or create a Chat Room to get started!
+            </h3>
+          ) : page === "newroom" ? (
+            <CreateRoom callback={getRooms} />
+          ) : page === "joinroom" ? (
+            <JoinRoom getRooms={getRooms} openRoom={setPage} />
+          ) : rooms.includes(page) ? (
+            <ChatRoom room={page} />
+          ) : null}
+        </Container>
+      </div>
+    </div>
   );
 };
 

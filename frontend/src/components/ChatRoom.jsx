@@ -94,9 +94,8 @@ const ChatRoom = ({ room }) => {
   return (
     <Card
       style={{
-        width: "70%",
-        minHeight: "75vh",
-        maxHeight: "75vh",
+        width: "90%",
+        height: "90vh",
         margin: "auto",
       }}
     >
@@ -106,7 +105,7 @@ const ChatRoom = ({ room }) => {
       </Card.Header>
       <Card.Body
         ref={chatContainerRef} // Assign the ref here
-        style={{ flex: "1 0 auto", overflowY: "auto", maxHeight: "60vh" }}
+        style={{ flex: "1 0 auto", overflowY: "auto", maxHeight: "75vh" }}
       >
         {messageLog.map((message, index) => (
           <div

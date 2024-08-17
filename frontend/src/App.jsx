@@ -10,11 +10,6 @@ import Login from "./pages/Login";
 function App() {
   return (
     <BrowserRouter>
-      <h1
-        style={{ textAlign: "center", marginTop: "50px", marginBottom: "50px" }}
-      >
-        Chat App
-      </h1>
       <Routes>
         <Route
           path="/"
